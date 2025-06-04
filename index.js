@@ -11,8 +11,23 @@ env.config();
 
 const app = express()
 app.use(bodyParse.json())
-app.use(cors())
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://nainaa-cabs.netlify.app',
+  'https://nainaa-cabservice.netlify.app/',
+  'https://nainaa-cabs.com'
+];
 
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use('/api',router)
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`))

@@ -53,12 +53,13 @@ const createBooking = async(req,res,next) =>{
       <p style="font-size: 16px; margin-top: 8px;">
         <strong>Service:</strong> ${values.service}<br />
         <strong>${
-          values.customeService.length > 0 ? "Custom Service:" : ""
+          values.customService?.length > 0 ? "Custom Service:" : ""
         }</strong> ${
-      values.customeService.length > 0 ? values.customeService : ""
+      values.customService.length > 0 ? values.customService : ""
     }<br />
         <strong>Phone Number:</strong> ${values.phone}<br />
         <strong>Email:</strong> ${values.email}<br />
+        <strong>Area:</strong> ${values.area}<br />
         <strong>Address:</strong> ${values.address}<br />
         <strong>Message:</strong> ${values.message}
       </p>
@@ -72,8 +73,8 @@ const createBooking = async(req,res,next) =>{
         if(!admin || !superAdmin){
          return next(errorHandler(404, "Admin not found"))
         }
-          await sendEmail(admin.email,"New Booking",`A new booking has been made by ${req.body.name}`)
-           await sendEmail(superAdmin.email,"New Booking",`A new booking has been made by ${req.body.name}`)
+          await sendEmail(admin.email,"New Booking",`A new booking has been made by ${req.body.name}`,message)
+           await sendEmail(superAdmin.email,"New Booking",`A new booking has been made by ${req.body.name}`,message)
 
         return res.status(201).json({ success: true, message: "Booking created successfully", booking});
         
@@ -95,8 +96,9 @@ const getArea = async(req,res,next) =>{
 
 const getAreabooking =async(req,res,next) =>{
     try {
-        let {id} =req.user;
+        let {id,role} =req.user;
         const user = await User.findById(id);
+        if(role !== "admin") return next(errorHandler(403, "You are not authorized to perform this action"))
         const area = user.area;
         const bookings = await Booking.find({ area: area });
         return res.status(200).json({ success: true, message: "Area fetched successfully", bookings});

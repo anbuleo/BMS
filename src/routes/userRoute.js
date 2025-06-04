@@ -6,7 +6,7 @@ import { verifyUser } from "../utils/verifyUser.js";
 const router = express.Router();
 
 
-router.post('/logIn',userController.logIn)
-router.post('/editRole',verifyUser,userController.editRole)
+router.post('/login',userController.logIn)
+router.post('/createrole',verifyUser,userController.editRole)
 
 export default router
