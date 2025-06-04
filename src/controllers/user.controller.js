@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import jwt from "jsonwebtoken"
 import { generateOTP } from "../utils/generateOtp.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 
 const logIn = async (req, res,next) => {
@@ -13,11 +14,13 @@ const logIn = async (req, res,next) => {
            let token = jwt.sign({ id: user._id,role: user.role }, process.env.JWT_SECRET, {
                  expiresIn: process.env.JWT_EXP,
            })
+          await sendEmail(req.body.email,"Hai Welcome to Book my Services",otp)
             return res.status(201).json({ success: true, message: "User created successfully", otp, user,token});
         }else{
             let token = jwt.sign({ id: user._id,role: user.role }, process.env.JWT_SECRET, {
                 expiresIn: process.env.JWT_EXP,
           })
+           await sendEmail(req.body.email,"Hai Welcome to Book my Services",otp)
             return res.status(200).json({ success: true, message: "User logged in successfully", user,token});
         }
         
