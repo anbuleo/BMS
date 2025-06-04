@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 router.use('/user',userRouter);
-router.use('/booking',useRouter);
+router.use('/booking',bookingRouter);
 
 
 
