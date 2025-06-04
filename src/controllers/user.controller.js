@@ -8,8 +8,8 @@ import { sendEmail } from "../utils/sendEmail.js";
 const logIn = async (req, res,next) => {
     try {
         const user = await User.findOne({ email: req.body.email });
+        let otp = generateOTP()
         if (!user){
-            let otp = generateOTP()
            const user =  await User.create({ ...req.body });
            let token = jwt.sign({ id: user._id,role: user.role }, process.env.JWT_SECRET, {
                  expiresIn: process.env.JWT_EXP,
@@ -21,7 +21,7 @@ const logIn = async (req, res,next) => {
                 expiresIn: process.env.JWT_EXP,
           })
            await sendEmail(req.body.email,"Hai Welcome to Book my Services",otp)
-            return res.status(200).json({ success: true, message: "User logged in successfully", user,token});
+            return res.status(200).json({ success: true, message: "User logged in successfully", user,token,otp});
         }
         
     } catch (error) {
