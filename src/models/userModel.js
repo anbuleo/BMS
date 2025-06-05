@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
         default: "user"
     },area: {
         type: String,
-        unique: true,
         default: null
     }
 })
