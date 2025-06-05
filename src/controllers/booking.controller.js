@@ -100,7 +100,7 @@ const getAreabooking =async(req,res,next) =>{
         const user = await User.findById(id);
         if(role !== "admin") return next(errorHandler(403, "You are not authorized to perform this action"))
         const area = user.area;
-        const bookings = await Booking.find({ area: area });
+        const bookings = await Booking.find({ area: area }).sort({ createdAt: -1 });
         return res.status(200).json({ success: true, message: "Area fetched successfully", bookings});
     } catch (error) {
         next(errorHandler(500, error.message))
@@ -113,7 +113,7 @@ const getAllAreaBooking =async(req,res,next) =>{
         let {id} = req.user
         const user = await User.findById(id);
         if(user.role !== "superAdmin") return next(errorHandler(403, "You are not authorized to perform this action"))
-        const bookings = await Booking.find();
+        const bookings = await Booking.find().sort({ createdAt: -1 });
         return res.status(200).json({ success: true, message: "Area fetched successfully", bookings});
     } catch (error) {
         next(errorHandler(500, error.message))

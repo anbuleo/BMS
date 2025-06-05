@@ -19,7 +19,7 @@ export const sendEmail = async(to,subject,text)=>{
       from: `"Book My Service" <${process.env.EMAIL_USER}>`,
       to,
       subject,
-      text
+      html:text
     });
     } catch (error) {
         console.log(error)
