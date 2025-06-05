@@ -7,10 +7,10 @@ import { sendEmail } from "../utils/sendEmail.js";
 const createBooking = async(req,res,next) =>{
     try {
        
-        let {area} = req.body
+        // let {area} = req.body
         let values = req.body
         const booking = await Booking.create({...req.body,userId: req.user.id});
-        const admin = await User.findOne({area: area})
+        const admin = await User.findOne({area: req.body.area})
         const superAdmin = await User.findOne({role: "superAdmin"})
         
         let message =`<div style="font-family: system-ui, sans-serif, Arial; font-size: 12px">
