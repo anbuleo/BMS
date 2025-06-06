@@ -153,8 +153,8 @@ let html = template
         if(!admin || !superAdmin){
          return next(errorHandler(404, "Admin not found"))
         }
-          await sendEmail(admin.email,"New Booking",`A new booking has been made by ${req.body.name}`,html)
-           await sendEmail(superAdmin.email,"New Booking",`A new booking has been made by ${req.body.name}`,html)
+          await sendEmail(admin.email,`A new booking has been made by ${req.body.name}`,html);
+           await sendEmail(superAdmin.email,`A new booking has been made by ${req.body.name}`,html)
 
         return res.status(201).json({ success: true, message: "Booking created successfully", booking});
         
