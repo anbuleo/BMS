@@ -13,9 +13,8 @@ const app = express()
 app.use(bodyParse.json())
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://nainaa-cabs.netlify.app',
-  'https://nainaa-cabservice.netlify.app/',
-  'https://nainaa-cabs.com'
+  'https://bookmyservice.co.in',
+  'https://www.bookmyservice.co.in',
 ];
 
 app.use(cors({
