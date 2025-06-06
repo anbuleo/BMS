@@ -92,15 +92,14 @@ const createBooking = async(req,res,next) =>{
       </div>
 
       <div class="info">
-        <p>Hi <strong>{{name}}</strong>,</p>
+        <p>Hi </p>
         <p>
-          Thank you for booking a service with <strong>BookMyService</strong>!
+          New, booking a service with <strong>BookMyService</strong>!
           Below are your booking details:
         </p>
       </div>
 
-      <div class="highlight-box">
-        <div class="icon">📋</div>
+      <div class="highlight-box"
         <div class="row"><div class="label">Date & Time:</div><div>{{date}} {{time}}</div></div>
         <div class="row"><div class="label">Name:</div><div>{{name}}</div></div>
         <div class="row"><div class="label">Service:</div><div>{{service}}</div></div>
@@ -117,10 +116,6 @@ const createBooking = async(req,res,next) =>{
         {{/if}}
       </div>
 
-      <div class="info" style="margin-top: 20px;">
-        <p>We will contact you shortly to confirm your booking and assign a service provider.</p>
-        <p>If you did not request this service, please ignore this email.</p>
-      </div>
 
       <div class="footer">
         &copy; 2025 BookMyService. All rights reserved.<br />
