@@ -13,68 +13,148 @@ const createBooking = async(req,res,next) =>{
         const admin = await User.findOne({area: req.body.area})
         const superAdmin = await User.findOne({role: "superAdmin"})
         
-        let message =`<div style="font-family: system-ui, sans-serif, Arial; font-size: 12px">
-  <div>A message by ${
-    values.name
-  } has been received. Kindly respond at your earliest convenience.</div>
-  <div
-    style="
-      margin-top: 20px;
-      padding: 15px 0;
-      border-width: 1px 0;
-      border-style: dashed;
-      border-color: lightgrey;
-    "
-  >
-    <table role="presentation" style="width: 100%; border-collapse: collapse;">
-  <tr>
-    <td style="vertical-align: top; padding: 10px;">
-      <div
-        style="
-          padding: 6px 10px;
-          margin: 0 10px;
-          background-color: aliceblue;
-          border-radius: 5px;
-          font-size: 26px;
-          text-align: center;
-        "
-        role="img"
-      >
-        &#x1F464;
+        let template =`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Booking Confirmation - BookMyService</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif, Arial;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        color: #2c3e50;
+      }
+      .container {
+        max-width: 600px;
+        margin: 30px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 25px 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header h1 {
+        color: #1e3a8a;
+      }
+      .info {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .highlight-box {
+        background-color: #e0f7fa;
+        border-radius: 6px;
+        padding: 15px;
+        margin-top: 20px;
+      }
+      .row {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      .label {
+        width: 130px;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #888;
+        margin-top: 30px;
+        border-top: 1px dashed #ccc;
+        padding-top: 15px;
+      }
+      .icon {
+        font-size: 32px;
+        text-align: center;
+        margin-bottom: 10px;
+        color: #00796b;
+      }
+      @media only screen and (max-width: 600px) {
+        .row {
+          flex-direction: column;
+        }
+        .label {
+          width: 100%;
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>BookMyService</h1>
+        <p style="font-size: 15px; margin-top: 5px;">Booking Confirmation</p>
       </div>
-    </td>
-    <td style="vertical-align: top; padding: 10px;">
-      <div style="color: #2c3e50; font-size: 16px; font-weight: bold;">
-        ${values.name}
-      </div>
-      <div style="color: #999999; font-size: 13px;">
-        ${values.date} ${values.time}
-      </div>
-      <p style="font-size: 16px; margin-top: 8px;">
-        <strong>Service:</strong> ${values.service}<br />
-        <strong>${
-          values.customService?.length > 0 ? "Custom Service:" : ""
-        }</strong> ${
-      values.customService.length > 0 ? values.customService : ""
-    }<br />
-        <strong>Phone Number:</strong> ${values.phone}<br />
-        <strong>Email:</strong> ${values.email}<br />
-        <strong>Area:</strong> ${values.area}<br />
-        <strong>Address:</strong> ${values.address}<br />
-        <strong>Message:</strong> ${values.message}
-      </p>
-    </td>
-  </tr>
-</table>
 
-  </div>
-</div>`
+      <div class="info">
+        <p>Hi <strong>{{name}}</strong>,</p>
+        <p>
+          Thank you for booking a service with <strong>BookMyService</strong>!
+          Below are your booking details:
+        </p>
+      </div>
+
+      <div class="highlight-box">
+        <div class="icon">📋</div>
+        <div class="row"><div class="label">Date & Time:</div><div>{{date}} {{time}}</div></div>
+        <div class="row"><div class="label">Name:</div><div>{{name}}</div></div>
+        <div class="row"><div class="label">Service:</div><div>{{service}}</div></div>
+       {{#if customService}}
+  <div class="row"><div class="label">Custom Service:</div><div>{{customService}}</div></div>
+{{/if}}
+        
+        <div class="row"><div class="label">Phone:</div><div>{{phone}}</div></div>
+        <div class="row"><div class="label">Email:</div><div>{{email}}</div></div>
+        <div class="row"><div class="label">Area:</div><div>{{area}}</div></div>
+        <div class="row"><div class="label">Address:</div><div>{{address}}</div></div>
+        {{#if message}}
+        <div class="row"><div class="label">Note:</div><div>{{message}}</div></div>
+        {{/if}}
+      </div>
+
+      <div class="info" style="margin-top: 20px;">
+        <p>We will contact you shortly to confirm your booking and assign a service provider.</p>
+        <p>If you did not request this service, please ignore this email.</p>
+      </div>
+
+      <div class="footer">
+        &copy; 2025 BookMyService. All rights reserved.<br />
+        This is an automated email. Please do not reply.
+      </div>
+    </div>
+  </body>
+</html>
+`
+
+let html = template
+  .replace(/{{name}}/g, values.name)
+  .replace(/{{date}}/g, values.date)
+  .replace(/{{time}}/g, values.time)
+  .replace(/{{email}}/g, values.email)
+  .replace(/{{phone}}/g, values.phone)
+  .replace(/{{address}}/g, values.address)
+  .replace(/{{area}}/g, values.area)
+  .replace(/{{service}}/g, values.service)
+  .replace(/{{customService}}/g, values.customService || "")
+  .replace(/{{message}}/g, values.message || "")
+  .replace(/{{#if customService}}[\s\S]*?{{\/if}}/g, values.customService ? 
+    `<div class="row"><div class="label">Custom Service:</div><div>${values.customService}</div></div>` : "")
+  .replace(/{{#if message}}[\s\S]*?{{\/if}}/g, values.message ? 
+    `<div class="row"><div class="label">Note:</div><div>${values.message}</div></div>` : "");
+
+
+
 
         if(!admin || !superAdmin){
          return next(errorHandler(404, "Admin not found"))
         }
-          await sendEmail(admin.email,"New Booking",`A new booking has been made by ${req.body.name}`,message)
-           await sendEmail(superAdmin.email,"New Booking",`A new booking has been made by ${req.body.name}`,message)
+          await sendEmail(admin.email,"New Booking",`A new booking has been made by ${req.body.name}`,html)
+           await sendEmail(superAdmin.email,"New Booking",`A new booking has been made by ${req.body.name}`,html)
 
         return res.status(201).json({ success: true, message: "Booking created successfully", booking});
         
