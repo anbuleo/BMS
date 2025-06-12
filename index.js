@@ -15,6 +15,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'https://bookmyservice.co.in',
   'https://www.bookmyservice.co.in',
+  'https://servyy.co.in',
+  'https://www.servyy.co.in',
 ];
 
 app.use(cors({
