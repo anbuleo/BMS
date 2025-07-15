@@ -13,6 +13,9 @@ const app = express()
 app.use(bodyParse.json())
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:3001',
+  'https://j411dgrf-3000.inc1.devtunnels.ms/',
+  'https://j411dgrf-3001.inc1.devtunnels.ms/',
   'https://bookmyservice.co.in',
   'https://www.bookmyservice.co.in',
   'https://servyy.co.in',
